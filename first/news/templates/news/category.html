@@ -1,0 +1,57 @@
+{%extends 'base.html'%}
+
+{%block sidebar%}
+     {%include 'inc/_sidebar.html'%}
+{%endblock%}
+
+{%block content%}
+        {%for item in news%}
+        <div class="card mb-3">
+          <div class="card-header">
+            Категория:{{item.category}}
+          </div>
+          <div class="card-body">
+            <div class="media">
+              {%if item.photo%}
+              <img src="{{item.photo.url}}" alt="" width="350px" class="mr-3">
+              {%else%}
+              <img src="https://picsum.photos/350/300?grayscale" alt="" class="mr-3" >
+              {%endif%}
+              <div class="media-body">
+                <h5 class="card-title">{{item.title}}</h5>
+            <p class="card-text">{{item.content|safe|linebreaks|truncatewords:"50"}}</p>
+            <a href="{{item.get_absolute_url}}" class="btn btn-primary">Перейти к новости</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+              Запощено: {{item.created_at|date:"Y-m-d H:s"}}// Изменено: {{item.updated_at|date:"Y-m-d H:s"}}//
+            {%if item.photo%}
+            Размер: {{item.photo.url|filesizeformat}}
+            {%else%}
+            Размер: {{item.content|filesizeformat}}
+            {%endif%}
+          </div>
+        </div>
+        {%endfor%}
+
+<nav aria-label="Page navigation example center" >
+  <ul class="pagination justify-content-end align-bottom">
+
+ {%for page in page_obj.paginator.page_range%}
+      {%if page > page_obj.number|add:-3 and page < page_obj.number|add:+3 %}
+      {%if page_obj.number == page%}
+      <li class="page-item active"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+      {%else%}
+      <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+      {%endif%}
+      {%endif%}
+
+  {%endfor%}
+  </ul>
+</nav>
+
+
+{%endblock%}
+
+

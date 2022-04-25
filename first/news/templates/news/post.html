@@ -1,0 +1,82 @@
+{%extends 'base.html'%}
+
+{%block sidebar%}
+        {%include 'inc/_sidebar.html'%}
+{%endblock%}
+
+{%block content%}
+              <div class="card mb-3 mt-3">
+          <div class="card-header">
+            Категория: {{post.category}}
+          </div>
+          <div class="card-body">
+            <div class="media">
+              {%if post.photo%}
+              <img src="{{post.photo.url}}" alt="" width="350px" class="mr-3">
+              {%else%}
+              <img src="https://picsum.photos/350/235?grayscale" alt="" class="mr-3" >
+              {%endif%}
+              <div class="media-body">
+                <h5 class="card-title">{{post.title}}</h5>
+            <p class="card-text">{{post.content|safe|linebreaks}}</p>
+            <a href="/" class="btn btn-primary">Лайк</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+              Запощено: {{post.created_at|date:"Y-m-d H:s"}}//Изменено: {{post.updated_at|date:"Y-m-d H:s"}}//
+            {%if item.photo%}
+            Размер: {{post.photo.url|filesizeformat}}
+            {%else%}
+            Размер: {{post.content|filesizeformat}}
+            {%endif%}
+
+          </div>
+        </div>
+<div class="mb-5 mt-5">
+    <h1 align="center" >Комментарии</h1>
+</div>
+{%if comments%}
+{%for comment in comments%}
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        {{comment.author}} /// {{comment.mail}} // оставлен: {{comment.created_at}}
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+      <div class="accordion-body">
+         {{comment.content}}
+      </div>
+    </div>
+  </div>
+      </div>
+{%endfor%}
+{%else%}
+<div class="alert alert-primary" role="alert">
+  Комментариев пока нет!
+</div>
+
+{%endif%}
+
+<div class="mb-5 mt-5">
+    <h1 align="center" >Оставить коммент:</h1>
+</div>
+
+<form action="{{post.get_absolute_url}}" method="post">
+    {%csrf_token%}
+    <div class="form group">
+        {{form.as_p}}
+    </div>
+
+    <div class="mb-3">
+    <button type="submit" class="btn btn-primary btn-block">Добавить Комментарий</button>
+        </div>
+</form>
+
+
+
+
+{%endblock%}

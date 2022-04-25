@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block sidebar%}
+     {%include 'inc/_sidebar.html'%}
+{%endblock%}
+
+{%block content%}
+        <h1>Регистрация</h1>
+<form method="post">
+    {%csrf_token%}
+    <div class="form group">
+        {{form.as_p}}
+    </div>
+
+    <div class="mb-3">
+    <button type="submit" class="btn btn-dark">Зарегистрироваться</button>
+        </div>
+</form>
+{%endblock%}
+
